@@ -1,0 +1,65 @@
+<html>
+<title>
+Cloud Demo
+</title>
+<head>
+<script>
+function dipslayType(type){
+alert(type);
+var divobj = document.getElementById('dtype')
+	if(type == '1'){
+		divobj.innerHTML = "CPU : 1 <br> RAM : 512 <br> Disk : 1"	
+	}
+	if(type == '2'){
+		divobj.innerHTML = "CPU : 2 <br> RAM : 1024 <br> Disk : 2"	
+	}
+	if(type == '3'){
+		divobj.innerHTML = "CPU : 4 <br> RAM : 2048 <br> Disk : 3"	
+	}
+}
+
+function create(){
+	var selobj = document.getElementById('stype').value
+	document.forms[0].action = '/create/type='+selobj
+	document.forms[0].submit()
+	
+}
+
+</script>
+</head>
+<body>
+<form id="create" action="/create" method="POST">
+<table style="height:50px">
+<tr><td><img src="/static/cloud.jpeg" width="1200px" height="200px"/> </td></tr>
+</table>
+<table width="90%" border="1">
+<tr>
+	<td width="200px" height="300px">
+		<table>
+		<tr><td><a href="/createjsp">Create Instance</a></td></tr>
+		<tr><td><a href="/queryjsp">List Instances</a></td></tr>
+		<tr><td><a href="/createDiskjsp">Create Volume</a></td></tr>
+		<tr><td><a href="/attachDiskjsp">Attach Volume</a></td></tr>
+		</table>
+	</td>
+	<td width="800px" height="300px">
+	<table>
+		<tr>
+		<td>Instance type</td>
+		<td><select id="stype" name="stype"  onchange="javascript:dipslayType(this.value)">
+			<option value="0">Select</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+		</select>
+		</td>
+		</tr>
+		<tr><td colspan="2"><div id="dtype"></div></td></tr>
+		<tr><td colspan="2"><input type="submit" value="Create"/></td></tr>
+	</td>
+</tr>
+</table>
+	
+</form>
+</body>
+<html>

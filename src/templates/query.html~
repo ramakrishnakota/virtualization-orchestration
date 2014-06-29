@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>
+Cloud Demo
+</title>
+</head>
+<body>
+<form>
+<table style="height:50px">
+<tr><td><img src="/static/cloud.jpeg" width="1200px" height="200px"/> </td></tr>
+</table>
+<table width="90%" border="1">
+<tr>
+	<td width="200px" height="300px">
+		<table>
+		<tr><td><a href="/createjsp">Create Instance</a></td></tr>
+		<tr><td><a href="/queryjsp">List Instances</a></td></tr>
+		</table>
+	</td>
+	<td width="800px" height="300px">
+	<table width="100%" border="1">
+	<tr align="left"><th>SNO</th><th>Type</th><th>Instance ID</th><th>IP Address</th><th>Start</th><th>Stop</th><th>Terminate</th><tr>
+	<tr><td>SNO</td><td>Type</td><td>Instance ID</td><td>IP Address</td><td>Start</td><td>Stop</td><td>Terminate</td><tr>
+	<table>
+	</td>
+</tr>
+</table>
+	
+</form>
+</body>
+<html>

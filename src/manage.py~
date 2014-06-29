@@ -1,0 +1,150 @@
+from flask import Flask
+from flask import render_template
+from bottle import route, run,get, post, request
+import bottle
+import socket
+import fcntl
+import struct
+from xml.dom.minidom import parseString
+import xml.etree.cElementTree as ET
+import sys
+import socket
+import libvirt
+import os
+from collections import defaultdict	
+app = Flask(__name__)
+images=dict()
+imagepaths=dict()
+pms=dict()
+types =[
+        {
+            "tid": 1,
+            "cpu": 1,
+            "ram": 512,
+            "disk": 1
+        },
+        {
+            "tid": 2,
+            "cpu": 2,
+            "ram": 1024,
+            "disk": 2
+        },
+        {
+            "tid": 3,
+            "cpu": 4,
+            "ram": 2048,
+            "disk": 3
+        }
+    ]
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/createjsp')
+def createjsp():
+    return render_template('create.html')
+
+@app.route('/createDiskjsp')
+def createDiskjsp():
+    return render_template('createDisk.html')
+
+@app.route('/attachDiskjsp')
+def attachDiskjsp():
+    return render_template('attachDisk.html')
+
+@app.route('/createDisk')
+def createDisk():
+    return render_template('createDisk.html')
+
+@app.route('/attachDisk')
+def attachDisk():
+    return render_template('attachDisk.html')
+
+@app.route('/destroyjsp')
+def destroyjsp():
+    return render_template('destroy.html')
+
+@app.route('/queryjsp')
+def queryjsp():
+    return render_template('query.html', out=out)
+
+@app.route('/create', methods=['POST'])
+def create():
+	error = None
+	type = request.form['stype']
+	print "type"+type
+	print types[1]['tid']	
+	return 'create instance page '+type
+
+def vm_createxml(name1,memory1,vcpu1,image_name,type1,arch,emulator,os_type,image_path,dev1,bus,dname,dtype,machine):
+    
+    
+    memory1=str(memory1)
+    vcpu1=str(vcpu1)
+    type1=str(type1)
+    type1=type1.lower()
+
+    exi
+    domain = ET.Element("domain")
+    domain.set("type",type1)
+
+    name = ET.SubElement(domain, "name")
+    name.text=name1
+    memory = ET.SubElement(domain, "memory")
+    memory.text=memory1
+    vcpu = ET.SubElement(domain, "vcpu")
+    vcpu.text=vcpu1
+    if (type1=='xen'):
+        bootloader=ET.SubElement(domain, "bootloader")
+        bootloader.text='/usr/bin/pygrub'
+    os = ET.SubElement(domain, "os")
+    type1=ET.SubElement(os, "type")
+    type1.set("arch",arch)
+    type1.set("machine",machine)
+    type1.text=os_type
+    if (type1=='qemu'):
+        boot=ET.SubElement(os, "boot")
+        boot.set("dev","hd")
+        
+    features = ET.SubElement(domain, "features")
+    acpi = ET.SubElement(features, "acpi")
+    apic = ET.SubElement(features, "apic")
+    pae = ET.SubElement(features, "pae")
+    on_poweroff = ET.SubElement(domain, "on_poweroff")
+    on_poweroff.text="destroy"
+    on_reboot = ET.SubElement(domain, "on_reboot")
+    on_reboot.text="restart"
+    on_crash = ET.SubElement(domain, "on_crash")
+    on_crash.text="restart"
+    devices = ET.SubElement(domain, "devices")
+    emulator = ET.SubElement(devices, "emulator")
+    emulator.text=emulator
+    disk = ET.SubElement(devices, "disk")
+    disk.set("type","file")
+    disk.set("device","disk")
+    driver = ET.SubElement(disk, "driver")
+    driver.set("name",dname)
+    driver.set("type",dtype)
+    source = ET.SubElement(disk, "source")
+    source.set("file",image_path+image_name)
+    target = ET.SubElement(disk, "target")
+    target.set("dev",dev1)
+    target.set("bus",bus)
+    address = ET.SubElement(disk, "address")
+    address.set("type","drive")
+    address.set("controller","0")
+    address.set("bus","0")
+    address.set("unit","0")
+
+    tree = ET.ElementTree(domain)
+    tree.write("filename.xml")
+
+@app.route('/query')
+def query():
+	return 'query page'
+
+if __name__ == '__main__':
+	
+    app.run(debug = True)
